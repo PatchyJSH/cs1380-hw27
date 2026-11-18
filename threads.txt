@@ -1,0 +1,49 @@
+1. In one sentence, what does a thread share with other threads in the same process?
+    Threads in the same process share the process's memory and resources, including global variables, heap memory, and open files, while each thread has its own stack and execution state.
+
+2. Why can counter++ produce a wrong total when two threads run it without a mutex?
+    counter++ is not an atomic operation because it involves reading, modifying, and writing the value, so two threads can overwrite each other's updates and cause increments to be lost.
+
+3. What is a critical section in your program?
+    The critical section in my program is the code that accesses and modifies the shared counter variable while it is protected by mtx_lock() and mtx_unlock().
+
+4. How did you decide which array indices each thread owns?
+    I divided the array into equal-sized chunks and assigned each thread a unique start and end index so that every element is processed exactly once and no threads overlap.
+
+5. When might multithreading not speed up a small array sum on your machine?
+    Multithreading may not speed up a small array sum because the overhead of creating, scheduling, and joining threads can take longer than the computation itself.
+
+6. In C terms, what plays the role of a linter when you use gcc -Wall -Wextra?
+    In C, gcc with -Wall -Wextra acts as a linter by analyzing the source code and warning about potential bugs, suspicious code, and style-related issues before the program runs.
+
+7. Why is an automated test better than only printing values and “looking at them”?
+    An automated test is better because it consistently checks correctness every time the program runs and can immediately detect regressions or mistakes that might be overlooked during manual inspection.
+
+8. What does your Makefile test/check target run?
+    My Makefile test target builds the program if needed, runs the executable, and relies on assert() statements to verify that the thread results are correct.
+
+9. Name one benefit of a project-wide formatter (even if teammates disagree on style).
+    A project-wide formatter improves consistency by automatically applying the same code style for everyone, which makes code easier to read and review regardless of personal preferences.
+
+10. If an LLM helped you write thread code, what should you disclose — and what should you not submit if you cannot explain a race or a mutex?
+    If an LLM helped write the thread code, I should disclose that assistance in my AI usage log, and I should not submit code that I cannot personally explain, especially concepts such as race conditions, mutexes, or thread synchronization.
+
+Compile command:
+
+gcc -Wall -Wextra -Wpedantic -std=c23 -pthread -g -o threads threads.c
+
+Formatter note:
+
+A formatter saves developers from arguing about indentation, spacing, and brace placement by applying a consistent style automatically.
+
+Testing:
+
+Build:
+make
+
+Run:
+make test
+
+The program uses assert() to verify that:
+1. The mutex-protected counter equals the expected total.
+2. The parallel array sum matches the sequential array sum.
